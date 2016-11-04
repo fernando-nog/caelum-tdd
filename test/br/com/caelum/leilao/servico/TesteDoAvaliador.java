@@ -1,4 +1,4 @@
-package br.com.caelum.leilao.teste;
+package br.com.caelum.leilao.servico;
 
 import static org.junit.Assert.*;
 
@@ -11,6 +11,8 @@ import br.com.caelum.leilao.servico.Avaliador;
 
 public class TesteDoAvaliador {
 
+	double delta = 0.00001;
+	
 	@Test
 	public void deveEntenderLancesEmOrdemCrescente() {
 		
@@ -31,9 +33,25 @@ public class TesteDoAvaliador {
 		//parte 3: validação
 		double maiorEsperado = 400;
 		double menorEsperado = 250;
-		double delta = 0.00001;
 
 		assertEquals(maiorEsperado, leiloeiro.getMaiorLance(), delta);
 		assertEquals(menorEsperado,leiloeiro.getMenorLance(), delta);
+	}
+	
+	@Test 
+	public void deveCalcularAMedia() {
+		Avaliador avaliador = new Avaliador();
+		
+		Usuario joao = new Usuario("joao");
+		Usuario jose = new Usuario("jose");
+		Usuario maria = new Usuario("maria");
+		
+		Leilao leilao = new Leilao("PS3");
+		leilao.propoe(new Lance(joao, 100));
+		leilao.propoe(new Lance(maria, 200));
+		leilao.propoe(new Lance(jose, 300));
+		avaliador.avalia(leilao);
+
+		assertEquals(200.00, avaliador.getMedia(), delta);
 	}
 }
