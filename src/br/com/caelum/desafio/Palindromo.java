@@ -2,7 +2,7 @@ package br.com.caelum.desafio;
 
 public class Palindromo {
 	
-	public boolean ehPalindromo(String frase) {
+	public static boolean ehPalindromo(String frase) {
 
         String fraseFiltrada = frase
                 .toUpperCase().replace(" ", "").replace("-", "");
