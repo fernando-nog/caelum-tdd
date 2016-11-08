@@ -38,23 +38,6 @@ public class TesteDoAvaliador {
 		assertEquals(menorEsperado,leiloeiro.getMenorLance(), delta);
 	}
 	
-	@Test 
-	public void deveCalcularAMedia() {
-		Avaliador avaliador = new Avaliador();
-		
-		Usuario joao = new Usuario("joao");
-		Usuario jose = new Usuario("jose");
-		Usuario maria = new Usuario("maria");
-		
-		Leilao leilao = new Leilao("PS3");
-		leilao.propoe(new Lance(joao, 100));
-		leilao.propoe(new Lance(maria, 200));
-		leilao.propoe(new Lance(jose, 300));
-		avaliador.avalia(leilao);
-
-		assertEquals(200.00, avaliador.getMedia(), delta);
-	}
-	
 	@Test
 	public void deveEntenderLeilaoComUmLance(){
 		Avaliador avaliador = new Avaliador();
@@ -64,7 +47,6 @@ public class TesteDoAvaliador {
 		avaliador.avalia(leilao);
 		assertEquals(200.00, avaliador.getMaiorLance(), delta);
 		assertEquals(200.00, avaliador.getMenorLance(), delta);
-		assertEquals(200.00, avaliador.getMedia(), delta);
 	}
 	
 	@Test
@@ -98,6 +80,24 @@ public class TesteDoAvaliador {
 		leilao.propoe(new Lance(joao, 400));
 		leilao.propoe(new Lance(joao, 300));
 		leilao.propoe(new Lance(joao, 100));
+		
+		avaliador.avalia(leilao);
+		
+		assertEquals(400.00, avaliador.getMaiorLance(), delta);
+		assertEquals(100.00, avaliador.getMenorLance(), delta);
+	}
+	
+	@Test
+	public void deveEncontrarTresMaioresLances(){
+		Avaliador avaliador = new Avaliador();
+		Usuario joao = new Usuario("Joao");
+		Leilao leilao = new Leilao("PS3");
+		
+		leilao.propoe(new Lance(joao, 400));
+		leilao.propoe(new Lance(joao, 300));
+		leilao.propoe(new Lance(joao, 100));
+		leilao.propoe(new Lance(joao, 700));
+		leilao.propoe(new Lance(joao, 850));
 		
 		avaliador.avalia(leilao);
 		
