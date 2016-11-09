@@ -101,12 +101,34 @@ public class TesteDoAvaliador {
 		
 		avaliador.avalia(leilao);
 		
-		assertEquals(400.00, avaliador.getMaiorLance(), delta);
-		assertEquals(100.00, avaliador.getMenorLance(), delta);
+		assertEquals(850.00, avaliador.getTresMaiores().get(0).getValor(), delta);
+		assertEquals(700.00, avaliador.getTresMaiores().get(1).getValor(), delta);
+		assertEquals(400.00, avaliador.getTresMaiores().get(2).getValor(), delta);
 	}
 	
-	//TODO impelementar seguintes testes:
-//    Um leilão com 5 lances, deve encontrar os três maiores
-//    Um leilão com 2 lances, deve devolver apenas os dois lances que encontrou
-//    Um leilão sem nenhum lance, devolve lista vazia
+	@Test
+	public void deveEncontrarDoisMaioresLances(){
+		Avaliador avaliador = new Avaliador();
+		Usuario joao = new Usuario("Joao");
+		Leilao leilao = new Leilao("PS3");
+		
+		leilao.propoe(new Lance(joao, 400));
+		leilao.propoe(new Lance(joao, 300));
+		
+		avaliador.avalia(leilao);
+		
+		assertTrue(avaliador.getTresMaiores().size() == 2);
+		assertEquals(400.00, avaliador.getTresMaiores().get(0).getValor(), delta);
+		assertEquals(300.00, avaliador.getTresMaiores().get(1).getValor(), delta);
+	}
+		
+	@Test
+	public void deveEntenderLeilaoSemLances(){
+		Avaliador avaliador = new Avaliador();
+		Leilao leilao = new Leilao("PS3");
+		
+		avaliador.avalia(leilao);
+		
+		assertTrue(avaliador.getTresMaiores().size() == 0);
+	}
 }
