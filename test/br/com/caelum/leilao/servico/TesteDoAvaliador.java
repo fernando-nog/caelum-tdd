@@ -107,7 +107,7 @@ public class TesteDoAvaliador {
 	}
 	
 	@Test
-	public void deveEncontrarDoisMaioresLances(){
+	public void deveDevolverTodosLancesCasoNaoHajaNoMinimo3(){
 		Avaliador avaliador = new Avaliador();
 		Usuario joao = new Usuario("Joao");
 		Leilao leilao = new Leilao("PS3");
@@ -117,7 +117,7 @@ public class TesteDoAvaliador {
 		
 		avaliador.avalia(leilao);
 		
-		assertTrue(avaliador.getTresMaiores().size() == 2);
+		assertEquals(2, avaliador.getTresMaiores().size());
 		assertEquals(400.00, avaliador.getTresMaiores().get(0).getValor(), delta);
 		assertEquals(300.00, avaliador.getTresMaiores().get(1).getValor(), delta);
 	}
