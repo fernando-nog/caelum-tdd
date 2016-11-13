@@ -15,7 +15,8 @@ public class Leilao {
 	}
 	
 	public void propoe(Lance lance) {
-		lances.add(lance);
+		if(!heUmLanceSeguido(lance) && !jaPossuiCincoLances(lance.getUsuario()))
+			lances.add(lance);
 	}
 
 	public String getDescricao() {
@@ -25,7 +26,32 @@ public class Leilao {
 	public List<Lance> getLances() {
 		return Collections.unmodifiableList(lances);
 	}
-
 	
+	private Lance getUltimoLance(){
+		if(getLances().size() >= 1)
+			return getLances().get( getLances().size() - 1);
+		else 
+			return null;
+	}
 	
+	private boolean heUmLanceSeguido(Lance novoLance){
+		if(getUltimoLance() != null)
+			return novoLance.getUsuario().equals(getUltimoLance().getUsuario());
+		else
+			return false;
+	}
+	
+	private boolean jaPossuiCincoLances(Usuario usuario){
+		int qtdLances = 0;
+		for (Lance lance : lances) {
+			if (usuario.equals(lance.getUsuario())) {
+				qtdLances += 1;
+			}
+		}
+		
+		if(qtdLances < 5)
+			return false;
+		else
+			return true;
+	}
 }
