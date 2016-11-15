@@ -16,7 +16,7 @@ public class TesteDoAvaliador {
 	@Test
 	public void deveEntenderLancesEmOrdemCrescente() {
 		
-		//parte 1: cen�rio
+		//parte 1: cenerio
 		Usuario joao = new Usuario("joao");
 		Usuario jose = new Usuario("jose");
 		Usuario maria = new Usuario("maria");
@@ -26,11 +26,11 @@ public class TesteDoAvaliador {
 		leilao.propoe(new Lance(maria, 300));
 		leilao.propoe(new Lance(jose, 400));
 		
-		//parte 2: a��o
+		//parte 2: acao
 		Avaliador leiloeiro = new Avaliador();
 		leiloeiro.avalia(leilao);
 		
-		//parte 3: valida��o
+		//parte 3: validacao
 		double maiorEsperado = 400;
 		double menorEsperado = 250;
 

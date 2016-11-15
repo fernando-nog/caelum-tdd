@@ -27,7 +27,7 @@ public class Leilao {
 		return Collections.unmodifiableList(lances);
 	}
 	
-	private Lance getUltimoLance(){
+	public Lance getUltimoLance(){
 		if(getLances().size() >= 1)
 			return getLances().get( getLances().size() - 1);
 		else 
@@ -53,5 +53,24 @@ public class Leilao {
 			return false;
 		else
 			return true;
+	}
+	
+	public void dobraLance(Usuario usuario){
+		Lance ultimoLancePorUsuario = getUltimoLancePorUsuario(usuario);
+		Double valorDobrado =  (ultimoLancePorUsuario.getValor() * 2);
+		
+		propoe( new Lance(usuario,valorDobrado));
+	}
+	
+	private Lance getUltimoLancePorUsuario(Usuario usuario){
+		Lance ultimoLancePorUsuario = null;
+		
+		for (int i = lances.size() - 1; i >= 0; i--) {
+			if(lances.get(i).getUsuario().equals(usuario)){
+				ultimoLancePorUsuario = lances.get(i);
+				break;
+			}
+		}
+		return ultimoLancePorUsuario;
 	}
 }

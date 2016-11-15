@@ -1,6 +1,6 @@
 package br.com.caelum.dominio;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -9,6 +9,8 @@ import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 
 public class LeilaoTest {
+	
+	private static double DELTA = 0.00001;
 	
 	@Test
 	public void naoDeveAceitarDoisLancesSeguidosDoMesmoUsuario(){
@@ -19,6 +21,7 @@ public class LeilaoTest {
 		leilao.propoe(new Lance(joao, 300));
 		
 		assertTrue(leilao.getLances().size() == 1);
+		assertEquals(400.00,leilao.getUltimoLance().getValor(), DELTA);
 	}
 
 	@Test 
@@ -40,5 +43,29 @@ public class LeilaoTest {
 		leilao.propoe(new Lance(joao, 590));
 		
 		assertTrue(leilao.getLances().size() == 10);
+		assertEquals(360,leilao.getUltimoLance().getValor(), DELTA);
+	}
+	
+	@Test
+	public void deveDobrarUltimoLanceDadoPorUmUsuario(){
+		Usuario joao = new Usuario("Joao");
+		Usuario mario = new Usuario("Mario");
+		Leilao leilao = new Leilao("PS3");
+		
+		leilao.propoe(new Lance(joao, 400));
+		leilao.propoe(new Lance(mario, 200));
+		
+		leilao.dobraLance(joao);
+
+		assertTrue(leilao.getLances().size() == 3);
+		assertEquals(800,leilao.getUltimoLance().getValor(), DELTA);
+	}
+	
+//	Caso ele não tenha dado nenhum lance anteriormente, 
+//	 não é criado um novo lance.
+	
+	@Test
+	public void naoDeveCriarLanceDobradoSemLanceAnteriorDoUsuario(){
+		//test fail
 	}
 }
