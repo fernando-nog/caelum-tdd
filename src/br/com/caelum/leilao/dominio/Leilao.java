@@ -59,8 +59,7 @@ public class Leilao {
 		Lance ultimoLancePorUsuario = getUltimoLancePorUsuario(usuario);
 		
 		if(ultimoLancePorUsuario != null){
-			Double valorDobrado = (ultimoLancePorUsuario.getValor() * 2);
-			propoe( new Lance(usuario,valorDobrado));
+			propoe( new Lance(usuario, ultimoLancePorUsuario.getValor() * 2));
 		}
 	}
 	
