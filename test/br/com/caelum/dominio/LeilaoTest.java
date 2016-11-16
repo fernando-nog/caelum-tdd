@@ -65,7 +65,7 @@ public class LeilaoTest {
 //	 não é criado um novo lance.
 	
 	@Test
-	public void naoDeveCriarLanceDobradoSemLanceAnteriorDoUsuario(){
+	public void naoDeveCriarLanceDobradoSemUmLanceAnteriorDoUsuario(){
 		//test fail
 	}
 }
