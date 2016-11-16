@@ -61,11 +61,17 @@ public class LeilaoTest {
 		assertEquals(800,leilao.getUltimoLance().getValor(), DELTA);
 	}
 	
-//	Caso ele não tenha dado nenhum lance anteriormente, 
-//	 não é criado um novo lance.
-	
 	@Test
 	public void naoDeveCriarLanceDobradoSemUmLanceAnteriorDoUsuario(){
-		//test fail
+		Usuario joao = new Usuario("Joao");
+		Usuario mario = new Usuario("Mario");
+		Leilao leilao = new Leilao("PS3");
+		
+		leilao.propoe(new Lance(joao, 400));
+		
+		leilao.dobraLance(mario);
+
+		assertTrue(leilao.getLances().size() == 1);
+		assertEquals(400,leilao.getUltimoLance().getValor(), DELTA);
 	}
 }

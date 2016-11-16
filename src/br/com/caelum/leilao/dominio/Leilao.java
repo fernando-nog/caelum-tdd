@@ -57,9 +57,11 @@ public class Leilao {
 	
 	public void dobraLance(Usuario usuario){
 		Lance ultimoLancePorUsuario = getUltimoLancePorUsuario(usuario);
-		Double valorDobrado =  (ultimoLancePorUsuario.getValor() * 2);
 		
-		propoe( new Lance(usuario,valorDobrado));
+		if(ultimoLancePorUsuario != null){
+			Double valorDobrado = (ultimoLancePorUsuario.getValor() * 2);
+			propoe( new Lance(usuario,valorDobrado));
+		}
 	}
 	
 	private Lance getUltimoLancePorUsuario(Usuario usuario){
