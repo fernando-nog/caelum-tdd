@@ -1,16 +1,19 @@
 package br.com.caelum.leilao.servico;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.leilao.build.CriadorDeLeilao;
+import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 import br.com.caelum.leilao.servico.Avaliador;
 
-public class TesteDoAvaliador {
+public class AvaliadorTest {
 
 	private static double DELTA = 0.00001;
 	
@@ -21,7 +24,7 @@ public class TesteDoAvaliador {
 
 	
 	@Before
-	public void criaAvaliador(){
+	public void setUp(){
 		this.leiloeiro = new Avaliador();
 		this.joao = new Usuario("João");
 		this.maria = new Usuario("Maria");
@@ -44,8 +47,8 @@ public class TesteDoAvaliador {
 		leiloeiro.avalia(leilao);
 		
 		//parte 3: validacao
-		assertEquals(maiorEsperado, leiloeiro.getMaiorLance(), DELTA);
-		assertEquals(menorEsperado, leiloeiro.getMenorLance(), DELTA);
+		assertThat(leiloeiro.getMaiorLance(), equalTo(maiorEsperado));
+		assertThat(leiloeiro.getMenorLance(), equalTo(menorEsperado));
 	}
 	
 	@Test
@@ -109,16 +112,18 @@ public class TesteDoAvaliador {
 		leiloeiro.avalia(leilao);
 		
 		assertEquals(3, leiloeiro.getTresMaiores().size());
-		assertEquals(850.00, leiloeiro.getTresMaiores().get(0).getValor(), DELTA);
-		assertEquals(700.00, leiloeiro.getTresMaiores().get(1).getValor(), DELTA);
-		assertEquals(400.00, leiloeiro.getTresMaiores().get(2).getValor(), DELTA);
+		assertThat(leiloeiro.getTresMaiores(), hasItems(
+				new Lance(joao, 850),
+				new Lance(maria, 700),
+				new Lance(joao, 400)
+		));
 	}
 	
 	@Test
 	public void deveDevolverTodosLancesCasoNaoHajaNoMinimo3(){
 		Leilao leilao =  new CriadorDeLeilao().para("PS3")
 				.lance(joao, 400)
-				.lance(maria, 300)
+				.lance(maria, 300)	
 				.constroi();
 		
 		leiloeiro.avalia(leilao);
@@ -135,5 +140,12 @@ public class TesteDoAvaliador {
 		leiloeiro.avalia(leilao);
 		
 		assertTrue(leiloeiro.getTresMaiores().size() == 0);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void naoDeveAvaliarLeiloesSemNenhumLanceDado(){
+		Leilao leilao =  new CriadorDeLeilao().para("PS3").constroi();
+		
+		leiloeiro.avalia(leilao);
 	}
 }

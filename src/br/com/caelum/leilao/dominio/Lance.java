@@ -6,6 +6,8 @@ public class Lance {
 	private double valor;
 	
 	public Lance(Usuario usuario, double valor) {
+		if(valor<=0) throw new IllegalArgumentException("Lance deve ser maior igual a 0");
+		
 		this.usuario = usuario;
 		this.valor = valor;
 	}
@@ -43,7 +45,8 @@ public class Lance {
 				return false;
 		} else if (!usuario.equals(other.usuario))
 			return false;
-		if (Double.doubleToLongBits(valor) != Double.doubleToLongBits(other.valor))
+		if (Double.doubleToLongBits(valor) != Double
+				.doubleToLongBits(other.valor))
 			return false;
 		return true;
 	}

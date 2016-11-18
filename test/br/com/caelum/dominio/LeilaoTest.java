@@ -1,11 +1,16 @@
 package br.com.caelum.dominio;
 
 import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+import static br.com.caelum.matcher.LeilaoMatcher.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import br.com.caelum.leilao.build.CriadorDeLeilao;
+import br.com.caelum.leilao.dominio.Lance;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 
@@ -16,7 +21,7 @@ public class LeilaoTest {
 	private Usuario mario; 
     
 	@Before
-	public void criaUsuarios(){
+	public void setUp(){
 		this.joao = new Usuario("João");
 		this.mario = new Usuario("Mario");
 	}
@@ -76,4 +81,16 @@ public class LeilaoTest {
 		assertTrue(leilao.getLances().size() == 1);
 		assertEquals(400,leilao.getUltimoLance().getValor(), DELTA);
 	}
+	
+	@Test
+    public void deveReceberUmLance() {
+        Leilao leilao = new CriadorDeLeilao().para("Macbook Pro 15").constroi();
+        assertEquals(0, leilao.getLances().size());
+
+        Lance lance = new Lance(new Usuario("Steve Jobs"), 2000);
+        leilao.propoe(lance);
+
+        assertThat(leilao.getLances().size(), equalTo(1));
+        assertThat(leilao, temUmLance(lance));
+    }
 }
