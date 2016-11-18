@@ -2,23 +2,31 @@ package br.com.caelum.dominio;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import br.com.caelum.leilao.dominio.Lance;
+import br.com.caelum.leilao.build.CriadorDeLeilao;
 import br.com.caelum.leilao.dominio.Leilao;
 import br.com.caelum.leilao.dominio.Usuario;
 
 public class LeilaoTest {
 	
 	private static double DELTA = 0.00001;
+	private Usuario joao;
+	private Usuario mario; 
+    
+	@Before
+	public void criaUsuarios(){
+		this.joao = new Usuario("João");
+		this.mario = new Usuario("Mario");
+	}
 	
 	@Test
 	public void naoDeveAceitarDoisLancesSeguidosDoMesmoUsuario(){
-		Usuario joao = new Usuario("Joao");
-		Leilao leilao = new Leilao("PS3");
-		
-		leilao.propoe(new Lance(joao, 400));
-		leilao.propoe(new Lance(joao, 300));
+		Leilao leilao =  new CriadorDeLeilao().para("PS3")
+									.lance(joao, 400)
+									.lance(joao, 300)
+									.constroi();
 		
 		assertTrue(leilao.getLances().size() == 1);
 		assertEquals(400.00,leilao.getUltimoLance().getValor(), DELTA);
@@ -26,21 +34,19 @@ public class LeilaoTest {
 
 	@Test 
 	public void naoDeveAceitarMaisDoQue5LancesDeUmMesmoUsuario(){
-		Usuario joao = new Usuario("Joao");
-		Usuario mario = new Usuario("Mario");
-		Leilao leilao = new Leilao("PS3");
-		
-		leilao.propoe(new Lance(joao, 400));
-		leilao.propoe(new Lance(mario, 200));
-		leilao.propoe(new Lance(joao, 600));
-		leilao.propoe(new Lance(mario, 500));
-		leilao.propoe(new Lance(joao, 350));
-		leilao.propoe(new Lance(mario, 700));
-		leilao.propoe(new Lance(joao, 360));
-		leilao.propoe(new Lance(mario, 260));
-		leilao.propoe(new Lance(joao, 390));
-		leilao.propoe(new Lance(mario, 360));
-		leilao.propoe(new Lance(joao, 590));
+		Leilao leilao =  new CriadorDeLeilao().para("PS3")
+									.lance(joao, 400)
+									.lance(mario, 200)
+									.lance(joao, 600)
+									.lance(mario, 500)
+									.lance(joao, 350)
+									.lance(mario, 700)
+									.lance(joao, 360)
+									.lance(mario, 260)
+									.lance(joao, 390)
+									.lance(mario, 360)
+									.lance(joao, 590)
+									.constroi();
 		
 		assertTrue(leilao.getLances().size() == 10);
 		assertEquals(360,leilao.getUltimoLance().getValor(), DELTA);
@@ -48,13 +54,11 @@ public class LeilaoTest {
 	
 	@Test
 	public void deveDobrarUltimoLanceDadoPorUmUsuario(){
-		Usuario joao = new Usuario("Joao");
-		Usuario mario = new Usuario("Mario");
-		Leilao leilao = new Leilao("PS3");
-		
-		leilao.propoe(new Lance(joao, 400));
-		leilao.propoe(new Lance(mario, 200));
-		
+		Leilao leilao =  new CriadorDeLeilao().para("PS3")
+									 .lance(joao, 400)
+									 .lance(mario, 200)
+									 .constroi();
+							
 		leilao.dobraLance(joao);
 
 		assertTrue(leilao.getLances().size() == 3);
@@ -63,11 +67,9 @@ public class LeilaoTest {
 	
 	@Test
 	public void naoDeveCriarLanceDobradoSemUmLanceAnteriorDoUsuario(){
-		Usuario joao = new Usuario("Joao");
-		Usuario mario = new Usuario("Mario");
-		Leilao leilao = new Leilao("PS3");
-		
-		leilao.propoe(new Lance(joao, 400));
+		Leilao leilao =  new CriadorDeLeilao().para("PS3")
+				 .lance(joao, 400)
+				 .constroi();
 		
 		leilao.dobraLance(mario);
 
